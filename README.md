@@ -12,6 +12,9 @@ weather-app/
 │   └── app.js           # 백엔드 요청과 화면 업데이트
 ├── backend/
 │   └── server.js        # 정적 파일 제공 및 외부 API 호출
+├── api/
+│   └── weather.js       # Vercel에서 실행하는 날씨 API 함수
+├── vercel.json         # Vercel 배포 설정
 ├── tests/
 │   └── server.test.js   # 서버 동작 검증
 ├── package.json
@@ -59,3 +62,13 @@ npm test
 ```
 
 테스트는 외부 API 응답을 대체하여 정상 조회, 잘못된 입력, 도시 없음, 외부 서비스 오류와 HTTP 응답을 검증합니다.
+
+## Vercel 배포
+
+1. GitHub 저장소를 Vercel 프로젝트와 연결합니다.
+2. 프로젝트의 Root Directory는 저장소 루트(기본값)로 지정합니다. `frontend`나 `backend`를 선택하지 않습니다.
+3. Framework Preset은 **Other**로 설정합니다. Build Command와 Output Directory의 별도 Override는 끄고 `vercel.json`을 사용합니다.
+4. `main` 브랜치에 푸시하면 자동 배포됩니다. 기존 배포만 보이면 Deployments에서 최신 커밋의 배포 상태를 확인합니다.
+5. 배포 URL에서 도시를 검색합니다. API 키나 환경 변수 설정은 필요하지 않습니다.
+
+Vercel은 `frontend`의 정적 파일을 제공하고 `/api/weather` 요청은 `api/weather.js` 함수에서 처리합니다. `backend/server.js`의 날씨 조회 로직을 재사용하므로 로컬에서는 기존처럼 `npm start`로 실행할 수 있습니다.

@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createWeatherServer, getWeather } from '../backend/server.js';
+import { createWeatherHandler } from '../api/weather.js';
 
 const mockFetch = async (url) => {
   if (url.hostname === 'geocoding-api.open-meteo.com') {
@@ -12,6 +13,23 @@ const mockFetch = async (url) => {
   assert.equal(url.searchParams.get('timezone'), 'auto');
   return Response.json({ timezone: 'Asia/Seoul', current: { temperature_2m: 20, relative_humidity_2m: 55 } });
 };
+
+test('Vercel 함수가 날씨 조회, 입력 오류, 메서드 오류를 처리한다', async () => {
+  const handler = createWeatherHandler(mockFetch);
+  for (const [method, url, expected] of [
+    ['GET', `/api/weather?city=${encodeURIComponent('서울')}`, 200],
+    ['GET', '/api/weather', 400],
+    ['POST', '/api/weather', 405],
+  ]) {
+    const headers = {};
+    const res = { setHeader: (key, value) => { headers[key] = value; }, end: (body) => { res.body = JSON.parse(body); } };
+    await handler({ method, url }, res);
+    assert.equal(res.statusCode, expected);
+    assert.equal(headers['Cache-Control'], 'no-store');
+    if (expected === 200) assert.equal(res.body.current.temperature_2m, 20);
+    else assert.ok(res.body.error);
+  }
+});
 
 test('도시 좌표를 조회하고 현재 날씨를 반환한다', async () => {
   const weather = await getWeather('서울', mockFetch);
