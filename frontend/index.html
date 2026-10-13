@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#edf3f9">
+  <title>오늘의 날씨</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main>
+    <div class="brand"><span aria-hidden="true">☀</span> WEATHER / 오늘</div>
+    <header>
+      <p class="eyebrow">어디로 떠나시나요?</p>
+      <h1>도시의 지금,<br>오늘의 날씨.</h1>
+      <p class="intro">궁금한 도시를 검색하고 지금의 날씨를 확인하세요.</p>
+    </header>
+    <section class="search-panel" aria-label="도시 검색">
+      <form id="weather-form">
+        <label for="city">도시 이름</label>
+        <div class="search-row">
+          <input id="city" name="city" placeholder="예: 서울, 부산, Tokyo" required minlength="2" maxlength="100" autocomplete="off">
+          <button id="submit" type="submit">날씨 확인 <span aria-hidden="true">↗</span></button>
+        </div>
+      </form>
+      <div class="suggestions"><span>빠른 검색</span><button type="button" data-city="서울">서울</button><button type="button" data-city="부산">부산</button><button type="button" data-city="Tokyo">도쿄</button><button type="button" data-city="London">런던</button></div>
+    </section>
+    <p id="status" role="status" aria-live="polite">도시를 입력하면 현재 날씨가 여기에 표시됩니다.</p>
+    <section id="weather" class="weather-card" aria-label="현재 날씨" hidden>
+      <div class="card-top"><span class="eyebrow">현재 날씨</span><span id="updated"></span></div>
+      <h2 id="location"></h2>
+      <div class="conditions"><span id="icon" aria-hidden="true"></span><div><div class="temperature"><span id="temperature"></span><span class="degree">°C</span></div><p id="description"></p></div></div>
+      <dl class="details"><div><dt>체감 온도</dt><dd id="feels-like"></dd></div><div><dt>습도</dt><dd id="humidity"></dd></div><div><dt>풍속</dt><dd id="wind"></dd></div></dl>
+    </section>
+    <footer>날씨 데이터 <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a> · 도시 검색 GeoNames<br>도시 현지 시간 기준 · 동명 도시는 첫 번째 검색 결과를 표시합니다.</footer>
+  </main>
+</body>
+</html>

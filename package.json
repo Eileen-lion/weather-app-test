@@ -1,0 +1,7 @@
+{
+  "name": "simple-weather-app",
+  "private": true,
+  "type": "module",
+  "scripts": { "start": "node backend/server.js", "test": "node --test" },
+  "engines": { "node": ">=22" }
+}
